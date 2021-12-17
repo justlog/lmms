@@ -122,6 +122,25 @@ Track * Track::create( TrackTypes tt, TrackContainer * tc )
 		default: break;
 	}
 
+	//If we're creating a new track while there's a solo track, we need to mute it.
+	if(tt != AutomationTrack && tt != HiddenAutomationTrack)
+	{
+		const TrackContainer::TrackList & tl = tc->tracks();
+
+		for (TrackContainer::TrackList::const_iterator it = tl.begin();
+			 it != tl.end(); ++it)
+		{
+			if (*it != t)
+			{
+				if ((*it)->isSolo())
+				{
+					t->setMuted(true);
+					break;
+				}
+			}
+		}
+	}
+
 	if( tc == Engine::getBBTrackContainer() && t )
 	{
 		t->createTCOsForBB( Engine::getBBTrackContainer()->numOfBBs()

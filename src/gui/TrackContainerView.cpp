@@ -403,6 +403,7 @@ void TrackContainerView::dropEvent( QDropEvent * _de )
 				Track::create( Track::InstrumentTrack,
 								m_tc ) );
 		it->setSimpleSerializing();
+		//Using replaceInstrument instead of loadSettings? replaceInstrument uses loadSettings anyhow and there we check for old mute/solo state.
 		it->loadSettings( dataFile.content().toElement() );
 		//it->toggledInstrumentTrackButton( true );
 		_de->accept();
